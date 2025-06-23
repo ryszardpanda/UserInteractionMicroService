@@ -1,5 +1,6 @@
 package com.UserInteraction.UserInteractionMicroService.controller;
 
+import com.UserInteraction.UserInteractionMicroService.common.ProductsType;
 import com.UserInteraction.UserInteractionMicroService.dto.product.ProductDTO;
 import com.UserInteraction.UserInteractionMicroService.service.facade.ProductFacadeService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,5 +23,9 @@ public class ProductController {
     @GetMapping
     Page<ProductDTO> getProducts(@ParameterObject Pageable pagebale){
         return productFacadeService.getProducts(pagebale);
+    }
+    @GetMapping("/by-type")
+    Page<ProductDTO> getProductsByType(@RequestParam("type") ProductsType type, @ParameterObject Pageable pageable){
+        return productFacadeService.getProductsByType(type, pageable);
     }
 }
