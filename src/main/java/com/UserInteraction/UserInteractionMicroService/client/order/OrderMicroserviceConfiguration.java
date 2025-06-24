@@ -14,8 +14,14 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderMicroserviceConfiguration {
+
     @Bean
-    public Retryer feignRetryerOrder(){
+    public OrderErrorDecoder orderErrorDecoder() {
+        return new OrderErrorDecoder();
+    }
+
+    @Bean
+    public Retryer feignRetryerOrder() {
         return new Retryer.Default(100, 500, 10);
     }
 

@@ -3,7 +3,6 @@ package com.UserInteraction.UserInteractionMicroService.client.product;
 import feign.Logger;
 import feign.QueryMapEncoder;
 import feign.Retryer;
-import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 
 import org.springframework.data.domain.Pageable;
@@ -15,10 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductMicroserviceConfiguration {
-//    @Bean
-//    public ErrorDecoder productFetcherErrorDecoder(){
-//        return new ProductErrorDecoder();
-//    }
+
+    @Bean
+    public ProductErrorDecoder productErrorDecoder() {
+        return new ProductErrorDecoder();
+    }
 
     @Bean
     public Retryer feignRetryerProduct(){

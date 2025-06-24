@@ -5,10 +5,11 @@ import feign.Retryer;
 import org.springframework.context.annotation.Bean;
 
 public class CartMicroserviceConfiguration {
-    //    @Bean
-//    public ErrorDecoder productFetcherErrorDecoder(){
-//        return new ProductErrorDecoder();
-//    }
+
+    @Bean
+    public CartErrorDecoder cartErrorDecoder() {
+        return new CartErrorDecoder();
+    }
 
     @Bean
     public Retryer feignRetryerCart(){
