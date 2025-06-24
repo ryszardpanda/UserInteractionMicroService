@@ -11,10 +11,13 @@ public enum ProductsType {
     ELECTRONICS("Electronics"),
     SMARTPHONE("Smartphone"),
     COMPUTER("Computer"),
+    RAM("Ram"),
+    PROCESSOR("Processor"),
+    ACCESSORY("Accessory"),
     PRODUCT("Product");
 
-
     private String name;
+
 
     ProductsType(String name) {
         this.name = name;
