@@ -2,7 +2,7 @@ package com.UserInteraction.UserInteractionMicroService.controller;
 
 import com.UserInteraction.UserInteractionMicroService.dto.cart.CartResponseDTO;
 import com.UserInteraction.UserInteractionMicroService.dto.cart.cartItem.CartItemRequestDTO;
-import com.UserInteraction.UserInteractionMicroService.service.facade.CartFacadeService;
+import com.UserInteraction.UserInteractionMicroService.service.CartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/user-interaction/cart")
 @Slf4j
 public class CartController {
-    private final CartFacadeService cartFacadeService;
+    private final CartService cartFacadeService;
 
     @PostMapping("/{userId}/item")
     CartResponseDTO addItem(@PathVariable String userId, @RequestBody CartItemRequestDTO cartItemRequestDTO) {

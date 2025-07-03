@@ -35,9 +35,6 @@ public class ProductMicroserviceConfiguration {
         return new PageableQueryMapEncoder();
     }
 
-    /**
-     * Custom encoder dla Pageable - konwertuje Pageable na odpowiednie parametry query
-     */
     public static class PageableQueryMapEncoder implements QueryMapEncoder {
 
         private final QueryMapEncoder delegate = new FieldQueryMapEncoder();
@@ -68,9 +65,6 @@ public class ProductMicroserviceConfiguration {
         }
     }
 
-    /**
-     * Default field-based encoder jako fallback
-     */
     public static class FieldQueryMapEncoder implements QueryMapEncoder {
         @Override
         public Map<String, Object> encode(Object object) {

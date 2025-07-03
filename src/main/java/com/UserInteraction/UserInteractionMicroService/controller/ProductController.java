@@ -2,7 +2,7 @@ package com.UserInteraction.UserInteractionMicroService.controller;
 
 import com.UserInteraction.UserInteractionMicroService.common.ProductsType;
 import com.UserInteraction.UserInteractionMicroService.dto.product.ProductDTO;
-import com.UserInteraction.UserInteractionMicroService.service.facade.ProductFacadeService;
+import com.UserInteraction.UserInteractionMicroService.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 @RequestMapping("/api/user-interaction/products")
 @Slf4j
 public class ProductController {
-    private final ProductFacadeService productFacadeService;
+    private final ProductService productFacadeService;
 
     @GetMapping
     Page<ProductDTO> getProducts(@ParameterObject Pageable pagebale){

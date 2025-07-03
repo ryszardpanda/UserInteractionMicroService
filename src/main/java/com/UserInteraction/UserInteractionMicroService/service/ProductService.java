@@ -1,4 +1,4 @@
-package com.UserInteraction.UserInteractionMicroService.service.facade;
+package com.UserInteraction.UserInteractionMicroService.service;
 
 import com.UserInteraction.UserInteractionMicroService.client.product.ProductsMicroserviceClient;
 import com.UserInteraction.UserInteractionMicroService.common.ProductsType;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ProductFacadeService {
+public class ProductService {
     private final ProductsMicroserviceClient productsMicroserviceClient;
 
    public Page<ProductDTO> getProducts(Pageable pagebale){

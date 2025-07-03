@@ -1,4 +1,4 @@
-package com.UserInteraction.UserInteractionMicroService.service.facade;
+package com.UserInteraction.UserInteractionMicroService.service;
 
 import com.UserInteraction.UserInteractionMicroService.client.order.OrderMicroserviceClient;
 import com.UserInteraction.UserInteractionMicroService.dto.order.CreateOrderRequestDTO;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @RequiredArgsConstructor
-public class OrderFacadeService {
+public class OrderService {
     private final OrderMicroserviceClient orderMicroserviceClient;
 
     public Page<OrderSummaryDTO> getOrdersByUser(@RequestParam String userId, @ParameterObject Pageable pageable){

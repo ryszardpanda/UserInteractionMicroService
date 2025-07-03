@@ -1,4 +1,4 @@
-package com.UserInteraction.UserInteractionMicroService.service.facade;
+package com.UserInteraction.UserInteractionMicroService.service;
 
 import com.UserInteraction.UserInteractionMicroService.client.cart.CartMicroserviceClient;
 import com.UserInteraction.UserInteractionMicroService.dto.cart.CartResponseDTO;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CartFacadeService {
+public class CartService {
 
     private final CartMicroserviceClient cartMicroserviceClient;
 

@@ -3,7 +3,7 @@ package com.UserInteraction.UserInteractionMicroService.controller;
 import com.UserInteraction.UserInteractionMicroService.dto.order.CreateOrderRequestDTO;
 import com.UserInteraction.UserInteractionMicroService.dto.order.OrderResponseDTO;
 import com.UserInteraction.UserInteractionMicroService.dto.order.OrderSummaryDTO;
-import com.UserInteraction.UserInteractionMicroService.service.facade.OrderFacadeService;
+import com.UserInteraction.UserInteractionMicroService.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class OrderController {
 
-    private final OrderFacadeService orderFacadeService;
+    private final OrderService orderFacadeService;
 
     @GetMapping
     Page<OrderSummaryDTO> getOrdersByUser(@RequestParam String userId, @ParameterObject Pageable pageable){
