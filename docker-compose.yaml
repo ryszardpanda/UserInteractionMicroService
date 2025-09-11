@@ -62,12 +62,15 @@ services:
       context: ../OrdersMicroService
       dockerfile: Dockerfile
     container_name: orders
-    depends_on: [postgres]
+    depends_on:
+      - postgres
+      - rabbitmq
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
       SPRING_DATASOURCE_USERNAME: shop_user
       SPRING_DATASOURCE_PASSWORD: shop_pass
-    networks: [shop-net]
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks: [ shop-net ]
     ports:
       - "8422:8422"
 
@@ -87,6 +90,33 @@ services:
     networks: [shop-net]
     ports:
       - "8423:8080"
+
+  invoice-service:
+    image: invoice-microservice:latest
+    ports:
+      - "8424:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
+      SPRING_DATASOURCE_USERNAME: shop_user
+      SPRING_DATASOURCE_PASSWORD: shop_pass
+      SPRING_DATASOURCE_DRIVER: org.postgresql.Driver
+      JPA_DDL_AUTO: create-drop
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks: [ shop-net ]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: webshop-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks: [ shop-net ]
 
 volumes:
   db-data:
