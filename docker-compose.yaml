@@ -92,7 +92,9 @@ services:
       - "8423:8080"
 
   invoice-service:
-    image: invoice-microservice:latest
+    build:
+      context: ../InvoiceMicroService
+      dockerfile: Dockerfile
     ports:
       - "8424:8080"
     environment:
