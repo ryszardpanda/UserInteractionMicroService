@@ -1,0 +1,129 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shop
+      POSTGRES_USER: shop_user
+      POSTGRES_PASSWORD: shop_pass
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: [shop-net]
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin
+    restart: unless-stopped
+    depends_on: [postgres]
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks: [shop-net]
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  products-ms:
+    build:
+      context: ../ProductsMicroService
+      dockerfile: Dockerfile
+    container_name: products
+    depends_on: [postgres]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
+      SPRING_DATASOURCE_USERNAME: shop_user
+      SPRING_DATASOURCE_PASSWORD: shop_pass
+    networks: [shop-net]
+    ports:
+      - "8420:8420"
+
+  cart-ms:
+    build:
+      context: ../CartMicroService
+      dockerfile: Dockerfile
+    container_name: cart
+    depends_on: [postgres]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
+      SPRING_DATASOURCE_USERNAME: shop_user
+      SPRING_DATASOURCE_PASSWORD: shop_pass
+    networks: [shop-net]
+    ports:
+      - "8421:8421"
+
+  orders-ms:
+    build:
+      context: ../OrdersMicroService
+      dockerfile: Dockerfile
+    container_name: orders
+    depends_on:
+      - postgres
+      - rabbitmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
+      SPRING_DATASOURCE_USERNAME: shop_user
+      SPRING_DATASOURCE_PASSWORD: shop_pass
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks: [ shop-net ]
+    ports:
+      - "8422:8422"
+
+  ui-bff:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: userinteraction
+    depends_on:
+      - products-ms
+      - cart-ms
+      - orders-ms
+    environment:
+      PRODUCTS_URL: http://products:8420
+      CART_URL:     http://cart:8421
+      ORDERS_URL:   http://orders:8422
+    networks: [shop-net]
+    ports:
+      - "8423:8080"
+
+  invoice-service:
+    build:
+      context: ../InvoiceMicroService
+      dockerfile: Dockerfile
+    ports:
+      - "8424:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shop
+      SPRING_DATASOURCE_USERNAME: shop_user
+      SPRING_DATASOURCE_PASSWORD: shop_pass
+      SPRING_DATASOURCE_DRIVER: org.postgresql.Driver
+      JPA_DDL_AUTO: create-drop
+      SPRING_RABBITMQ_HOST: rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+    networks: [ shop-net ]
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: webshop-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks: [ shop-net ]
+
+volumes:
+  db-data:
+  pgadmin-data:
+
+networks:
+  shop-net:
+    driver: bridge
